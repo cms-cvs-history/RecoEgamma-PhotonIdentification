@@ -1,0 +1,51 @@
+
+module PhotonIDProd = PhotonIDProducer {
+  string photonProducer =  "photons"
+  string photonLabel = ""
+  string photonIDLabel = "PhotonIDCutBasedProducer"
+  string photonIDAssociationLabel = "PhotonAssociatedID"
+  bool doCutBased = true
+
+  #cuts
+  double PhotonBCIso = 999
+  double PhotonHollowTrk = 999
+  double PhotonSolidTrk  = 999
+  int32 PhotonSolidNTrk = 999
+  int32 PhotonHollowNTrk = 999
+  double PhotonEtaWidth = 999
+  double PhotonHadOverEM = 999
+  #end cuts
+
+  #Algo required inputs:
+  string barrelislandsuperclusterProducer = "correctedBarrelIslandSuperClusters"
+  string barrelislandsuperclusterCollection = ""
+  string endcapSuperClustersProducer = "correctedEndcapSuperClustersWithPreshower"     
+  string endcapsuperclusterCollection = ""
+  double BasicClusterConeInnerRadius = 0.
+  double BasicClusterConeOuterRadius = 0.4
+  double isolationbasicclusterThreshold = 0
+  double isolationtrackThreshold = 0
+  double TrackConeOuterRadius = 0.4
+  double TrackConeInnerRadius = 0.1
+  InputTag trackProducer = ctfWithMaterialTracks
+  InputTag GsfRecoCollection = pixelMatchGsfElectrons
+
+  string basicclusterProducer = "islandBasicClusters"
+  string barrelbasiccluterCollection = "islandBarrelBasicClusters"
+  string barrelbasicclusterProducer = "islandBasicClusters"
+  string endcapbasicclusterCollection = "islandEndcapBasicClusters"
+  string endcapbasicclusterProducer = "islandBasicClusters"
+
+  #select cuts to do.
+  bool DoBasicClusterIsolationCut = false
+  bool DoHollowConeTrackIsolationCut = false
+  bool DoSolidConeTrackIsolationCut = false
+  bool DoHollowConeNTrkCut = false
+  bool DoSolidConeNTrkCut = false
+  bool RequireNotElectron = false
+  bool RequireFiducial = false
+  bool DoHadOverEMCut = false
+  bool DoEtaWidthCut = false
+
+}
+

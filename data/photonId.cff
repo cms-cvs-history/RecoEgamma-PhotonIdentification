@@ -1,0 +1,6 @@
+# Producer for Hybrid BasicClusters and SuperClusters
+include "RecoEgamma/PhotonIdentification/data/photonId.cfi"
+
+
+# photonID sequence
+sequence photonIDSequence = {PhotonIDProd}
