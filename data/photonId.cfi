@@ -17,7 +17,7 @@ module PhotonIDProd = PhotonIDProducer {
   #end cuts
 
   #Algo required inputs:
-  string barrelislandsuperclusterProducer = "correctedBarrelIslandSuperClusters"
+  string barrelislandsuperclusterProducer = "correctedIslandBarrelSuperClusters"
   string barrelislandsuperclusterCollection = ""
   string endcapSuperClustersProducer = "correctedEndcapSuperClustersWithPreshower"     
   string endcapsuperclusterCollection = ""
@@ -27,7 +27,7 @@ module PhotonIDProd = PhotonIDProducer {
   double isolationtrackThreshold = 0
   double TrackConeOuterRadius = 0.4
   double TrackConeInnerRadius = 0.1
-  InputTag trackProducer = ctfWithMaterialTracks
+  InputTag trackProducer = generalTracks
   InputTag GsfRecoCollection = pixelMatchGsfElectrons
 
   string basicclusterProducer = "islandBasicClusters"
