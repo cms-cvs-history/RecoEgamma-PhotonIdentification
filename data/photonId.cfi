@@ -14,6 +14,8 @@ module PhotonIDProd = PhotonIDProducer {
   int32 PhotonHollowNTrk = 999
   double PhotonEtaWidth = 999
   double PhotonHadOverEM = 999
+  double PhotonEcalRecHitIso = 999
+  double PhotonHcalRecHitIso = 999
   #end cuts
 
   #Algo required inputs:
@@ -29,12 +31,26 @@ module PhotonIDProd = PhotonIDProducer {
   double TrackConeInnerRadius = 0.1
   InputTag trackProducer = generalTracks
   InputTag GsfRecoCollection = pixelMatchGsfElectrons
+  double EcalRecHitInnerRadius = 0.1
+  double EcalRecHitOuterRadius = 0.4
+  double EcalRecThresh = 0
+  double HcalRecHitInnerRadius = 0.1
+  double HcalRecHitOuterRadius = 0.4
+  double HcalRecHitThresh = 0
 
   string basicclusterProducer = "islandBasicClusters"
   string barrelbasiccluterCollection = "islandBarrelBasicClusters"
   string barrelbasicclusterProducer = "islandBasicClusters"
   string endcapbasicclusterCollection = "islandEndcapBasicClusters"
   string endcapbasicclusterProducer = "islandBasicClusters"
+
+  string barrelEcalRecHitCollection = "EcalRecHitsEB"
+  string barrelEcalRecHitProducer = "ecalRecHit"
+  string endcapEcalRecHitCollection = "EcalRecHitsEE"
+  string endcapEcalRecHitProducer = "ecalRecHit"
+  string HcalRecHitCollection = ""
+  string HcalRecHitProducer =  "hbhereco"
+
 
   #select cuts to do.
   bool DoBasicClusterIsolationCut = false
@@ -46,6 +62,8 @@ module PhotonIDProd = PhotonIDProducer {
   bool RequireFiducial = false
   bool DoHadOverEMCut = false
   bool DoEtaWidthCut = false
+  bool DoEcalRecHitIsolationCut = false
+  bool DoHcalRecHitIsolationCut = false
 
 }
 
