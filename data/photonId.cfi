@@ -7,25 +7,40 @@ module PhotonIDProd = PhotonIDProducer {
   bool doCutBased = true
 
   #cuts
-  double PhotonBCIso = 999
-  double PhotonHollowTrk = 999
-  double PhotonSolidTrk  = 999
-  int32 PhotonSolidNTrk = 999
-  int32 PhotonHollowNTrk = 999
-  double PhotonEtaWidth = 999
-  double PhotonHadOverEM = 999
-  double PhotonEcalRecHitIso = 999
-  double PhotonHcalRecHitIso = 999
+  #LooseEM cuts
+  double LooseEMHollowTrk = 999
+  double LooseEMSolidTrk  = 999
+  int32 LooseEMSolidNTrk = 999
+  int32 LooseEMHollowNTrk = 999
+  double LooseEMEtaWidth = 999
+  double LooseEMHadOverEM = 999
+  double LooseEMEcalRecHitIso = 999
+  double LooseEMHcalRecHitIso = 999
+  double LooseEMR9Cut = 0
+
+  double LoosePhotonHollowTrk = 999
+  double LoosePhotonSolidTrk  = 999
+  int32 LoosePhotonSolidNTrk = 999
+  int32 LoosePhotonHollowNTrk = 999
+  double LoosePhotonEtaWidth = 999
+  double LoosePhotonHadOverEM = 999
+  double LoosePhotonEcalRecHitIso = 999
+  double LoosePhotonHcalRecHitIso = 999
+  double LoosePhotonR9Cut = 0
+
+  double TightPhotonHollowTrk = 999
+  double TightPhotonSolidTrk  = 999
+  int32 TightPhotonSolidNTrk = 999
+  int32 TightPhotonHollowNTrk = 999
+  double TightPhotonEtaWidth = 999
+  double TightPhotonHadOverEM = 999
+  double TightPhotonEcalRecHitIso = 999
+  double TightPhotonHcalRecHitIso = 999
+  double TightPhotonR9Cut = 0
+
   #end cuts
 
   #Algo required inputs:
-  string barrelislandsuperclusterProducer = "correctedIslandBarrelSuperClusters"
-  string barrelislandsuperclusterCollection = ""
-  string endcapSuperClustersProducer = "correctedEndcapSuperClustersWithPreshower"     
-  string endcapsuperclusterCollection = ""
-  double BasicClusterConeInnerRadius = 0.
-  double BasicClusterConeOuterRadius = 0.4
-  double isolationbasicclusterThreshold = 0
   double isolationtrackThreshold = 0
   double TrackConeOuterRadius = 0.4
   double TrackConeInnerRadius = 0.1
@@ -38,12 +53,6 @@ module PhotonIDProd = PhotonIDProducer {
   double HcalRecHitOuterRadius = 0.4
   double HcalRecHitThresh = 0
 
-  string basicclusterProducer = "islandBasicClusters"
-  string barrelbasiccluterCollection = "islandBarrelBasicClusters"
-  string barrelbasicclusterProducer = "islandBasicClusters"
-  string endcapbasicclusterCollection = "islandEndcapBasicClusters"
-  string endcapbasicclusterProducer = "islandBasicClusters"
-
   string barrelEcalRecHitCollection = "EcalRecHitsEB"
   string barrelEcalRecHitProducer = "ecalRecHit"
   string endcapEcalRecHitCollection = "EcalRecHitsEE"
@@ -51,17 +60,16 @@ module PhotonIDProd = PhotonIDProducer {
   string HcalRecHitCollection = ""
   string HcalRecHitProducer =  "hbhereco"
 
-
   #select cuts to do.
-  bool DoBasicClusterIsolationCut = false
+  bool RequireNotElectron = false
+  bool RequireFiducial = false
   bool DoHollowConeTrackIsolationCut = false
   bool DoSolidConeTrackIsolationCut = false
   bool DoHollowConeNTrkCut = false
   bool DoSolidConeNTrkCut = false
-  bool RequireNotElectron = false
-  bool RequireFiducial = false
   bool DoHadOverEMCut = false
   bool DoEtaWidthCut = false
+  bool DoR9Cut = false
   bool DoEcalRecHitIsolationCut = false
   bool DoHcalRecHitIsolationCut = false
 
