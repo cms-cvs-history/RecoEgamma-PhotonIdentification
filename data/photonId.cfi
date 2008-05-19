@@ -5,54 +5,6 @@ module PhotonIDProd = PhotonIDProducer {
   string photonIDLabel = "PhotonIDCutBasedProducer"
   string photonIDAssociationLabel = "PhotonAssociatedID"
   bool doCutBased = true
-
-  #cuts
-  #LooseEM cuts
-  double LooseEMHollowTrk = 999
-  double LooseEMSolidTrk  = 999
-  int32 LooseEMSolidNTrk = 999
-  int32 LooseEMHollowNTrk = 999
-  double LooseEMEtaWidth = 999
-  double LooseEMHadOverEM = 999
-  double LooseEMEcalRecHitIso = 999
-  double LooseEMHcalRecHitIso = 999
-  double LooseEMR9Cut = 0
-
-  double LoosePhotonHollowTrk = 999
-  double LoosePhotonSolidTrk  = 999
-  int32 LoosePhotonSolidNTrk = 999
-  int32 LoosePhotonHollowNTrk = 999
-  double LoosePhotonEtaWidth = 999
-  double LoosePhotonHadOverEM = 999
-  double LoosePhotonEcalRecHitIso = 999
-  double LoosePhotonHcalRecHitIso = 999
-  double LoosePhotonR9Cut = 0
-
-  double TightPhotonHollowTrk = 999
-  double TightPhotonSolidTrk  = 999
-  int32 TightPhotonSolidNTrk = 999
-  int32 TightPhotonHollowNTrk = 999
-  double TightPhotonEtaWidth = 999
-  double TightPhotonHadOverEM = 999
-  double TightPhotonEcalRecHitIso = 999
-  double TightPhotonHcalRecHitIso = 999
-  double TightPhotonR9Cut = 0
-
-  #end cuts
-
-  #Algo required inputs:
-  double isolationtrackThreshold = 0
-  double TrackConeOuterRadius = 0.4
-  double TrackConeInnerRadius = 0.1
-  InputTag trackProducer = generalTracks
-  InputTag GsfRecoCollection = pixelMatchGsfElectrons
-  double EcalRecHitInnerRadius = 0.0
-  double EcalRecHitOuterRadius = 0.4
-  double EcalRecThresh = 0
-  double HcalRecHitInnerRadius = 0.1
-  double HcalRecHitOuterRadius = 0.4
-  double HcalRecHitThresh = 0
-
   string barrelEcalRecHitCollection = "EcalRecHitsEB"
   string barrelEcalRecHitProducer = "ecalRecHit"
   string endcapEcalRecHitCollection = "EcalRecHitsEE"
@@ -72,6 +24,90 @@ module PhotonIDProd = PhotonIDProducer {
   bool DoR9Cut = false
   bool DoEcalRecHitIsolationCut = false
   bool DoHcalRecHitIsolationCut = false
+
+  #cuts, two sets, EE and EB
+  #LooseEM cuts EB
+  double LooseEMHollowTrkEB = 999
+  double LooseEMSolidTrkEB  = 999
+  int32 LooseEMSolidNTrkEB = 999
+  int32 LooseEMHollowNTrkEB = 999
+  double LooseEMEtaWidthEB = 999
+  double LooseEMHadOverEMEB = 999
+  double LooseEMEcalRecHitIsoEB = 999
+  double LooseEMHcalRecHitIsoEB = 999
+  double LooseEMR9CutEB = 0
+
+  #LoosePhoton cuts EB
+  double LoosePhotonHollowTrkEB = 999
+  double LoosePhotonSolidTrkEB  = 999
+  int32 LoosePhotonSolidNTrkEB = 999
+  int32 LoosePhotonHollowNTrkEB = 999
+  double LoosePhotonEtaWidthEB = 999
+  double LoosePhotonHadOverEMEB = 999
+  double LoosePhotonEcalRecHitIsoEB = 999
+  double LoosePhotonHcalRecHitIsoEB = 999
+  double LoosePhotonR9CutEB = 0
+
+  #TightPhoton cuts EB
+  double TightPhotonHollowTrkEB = 999
+  double TightPhotonSolidTrkEB  = 999
+  int32 TightPhotonSolidNTrkEB = 999
+  int32 TightPhotonHollowNTrkEB = 999
+  double TightPhotonEtaWidthEB = 999
+  double TightPhotonHadOverEMEB = 999
+  double TightPhotonEcalRecHitIsoEB = 999
+  double TightPhotonHcalRecHitIsoEB = 999
+  double TightPhotonR9CutEB = 0
+
+  #LooseEM cuts EE
+  double LooseEMHollowTrkEE = 999
+  double LooseEMSolidTrkEE  = 999
+  int32 LooseEMSolidNTrkEE = 999
+  int32 LooseEMHollowNTrkEE = 999
+  double LooseEMEtaWidthEE = 999
+  double LooseEMHadOverEMEE = 999
+  double LooseEMEcalRecHitIsoEE = 999
+  double LooseEMHcalRecHitIsoEE = 999
+  double LooseEMR9CutEE = 0
+
+  #LoosePhoton cuts EE
+  double LoosePhotonHollowTrkEE = 999
+  double LoosePhotonSolidTrkEE  = 999
+  int32 LoosePhotonSolidNTrkEE = 999
+  int32 LoosePhotonHollowNTrkEE = 999
+  double LoosePhotonEtaWidthEE = 999
+  double LoosePhotonHadOverEMEE = 999
+  double LoosePhotonEcalRecHitIsoEE = 999
+  double LoosePhotonHcalRecHitIsoEE = 999
+  double LoosePhotonR9CutEE = 0
+
+  #TightPhoton cuts EE
+  double TightPhotonHollowTrkEE = 999
+  double TightPhotonSolidTrkEE  = 999
+  int32 TightPhotonSolidNTrkEE = 999
+  int32 TightPhotonHollowNTrkEE = 999
+  double TightPhotonEtaWidthEE = 999
+  double TightPhotonHadOverEMEE = 999
+  double TightPhotonEcalRecHitIsoEE = 999
+  double TightPhotonHcalRecHitIsoEE = 999
+  double TightPhotonR9CutEE = 0
+
+  #end cuts
+
+  #Algo required inputs:
+  double isolationtrackThreshold = 0
+  double TrackConeOuterRadius = 0.4
+  double TrackConeInnerRadius = 0.1
+  InputTag trackProducer = generalTracks
+  InputTag GsfRecoCollection = pixelMatchGsfElectrons
+  double EcalRecHitInnerRadius = 0.0
+  double EcalRecHitOuterRadius = 0.4
+  double EcalRecThresh = 0
+  double HcalRecHitInnerRadius = 0.1
+  double HcalRecHitOuterRadius = 0.4
+  double HcalRecHitThresh = 0
+
+
 
 }
 
