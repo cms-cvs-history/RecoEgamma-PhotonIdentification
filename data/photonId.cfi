@@ -102,9 +102,11 @@ module PhotonIDProd = PhotonIDProducer {
   InputTag GsfRecoCollection = pixelMatchGsfElectrons
   double EcalRecHitInnerRadius = 0.0
   double EcalRecHitOuterRadius = 0.4
+  double EcalRecHitEtaSlice = 0.02
   double EcalRecThresh = 0
   double HcalRecHitInnerRadius = 0.1
   double HcalRecHitOuterRadius = 0.4
+  double HcalRecHitEtaSlice = 0.
   double HcalRecHitThresh = 0
 
 
