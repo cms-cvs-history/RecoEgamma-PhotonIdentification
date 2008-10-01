@@ -5,43 +5,87 @@ process = cms.Process("PhotonIDProc")
 # Physics Analysis Tools (PAT)
 process.load("PhysicsTools.PatAlgos.patLayer0_cff")
 process.load("PhysicsTools.PatAlgos.patLayer1_cff")
-
-process.load("FWCore.MessageLogger.MessageLogger_cfi")
+# PhotonID
 process.load("RecoEgamma.PhotonIdentification.photonId_cff")
+# Standard
+process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.load("Geometry.CaloEventSetup.CaloGeometry_cfi")
-process.load("Geometry.CMSCommonData.cmsIdealGeometryXML_cfi")
-process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Geometry.CaloEventSetup.CaloTopology_cfi")
+process.load("Geometry.CMSCommonData.cmsIdealGeometryXML_cfi")
+#process.load("Configuration.StandardSequences.MagneticField_cff")
 
+
+##############################################################
+# Input files
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-'/store/relval/CMSSW_2_1_8/RelValSingleGammaPt35/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/IDEAL_V9_v1/0002/3C58AC36-5E82-DD11-AD90-001617DBD316.root',
-'/store/relval/CMSSW_2_1_8/RelValSingleGammaPt35/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/IDEAL_V9_v1/0002/94B23B5E-5E82-DD11-A2B1-000423D98EC8.root',
-'/store/relval/CMSSW_2_1_8/RelValSingleGammaPt35/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/IDEAL_V9_v1/0002/B63D476E-5E82-DD11-9D5E-001617C3B77C.root',
-'/store/relval/CMSSW_2_1_8/RelValSingleGammaPt35/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/IDEAL_V9_v1/0003/7A561002-A782-DD11-8642-000423D9939C.root'
+        '/store/relval/CMSSW_2_1_9/RelValSingleGammaPt35/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/IDEAL_V9_v2/0000/3652B809-B585-DD11-A8D9-000423D9939C.root',
+        '/store/relval/CMSSW_2_1_9/RelValSingleGammaPt35/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/IDEAL_V9_v2/0000/48AFC4AC-B485-DD11-A63C-000423D94C68.root',
+        '/store/relval/CMSSW_2_1_9/RelValSingleGammaPt35/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/IDEAL_V9_v2/0000/4E76DF7F-B385-DD11-955C-000423D6A6F4.root',
+        '/store/relval/CMSSW_2_1_9/RelValSingleGammaPt35/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/IDEAL_V9_v2/0001/725453E4-0487-DD11-A22C-000423D94494.root'
 )
 )
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1)
+    input = cms.untracked.int32(100)
 )
+##############################################################
 
-process.Out = cms.OutputModule("PoolOutputModule",
-    outputCommands = cms.untracked.vstring('drop *', 
-        'keep edmHepMCProduct_*_*_*', 
-        'keep recoBasicClusters_*_*_*', 
-        'keep recoSuperClusters_*_*_*', 
-        'keep *_PhotonIDProd_*_*', 
-        'keep *_PhotonIDProd_*_*', 
-        'keep recoPhotons_*_*_*'),
-    fileName = cms.untracked.string('Photest.root')
+
+##############################################################
+# Set Pat "cleaning" variables.  These cut
+# photons that do not pass these.
+# The following variables here are the same as in 
+#  CMSSW/PhysicsTools/PatAlgos/python/cleaningLayer0/photonCleaner_cfi.py
+# but I have copied and pasted them here for simplicity.
+
+process.allLayer0Photons.removeDuplicates = cms.string('none')
+process.allLayer0Photons.removeElectrons  = cms.string('none')
+process.allLayer0Photons.saveAll          = cms.string('all')
+
+process.allLayer0Photons.isolation = cms.PSet(
+        tracker = cms.PSet(
+            # source
+            src = cms.InputTag("patAODPhotonIsolations","gamIsoDepositTk"),
+            # parameters
+            deltaR = cms.double(0.4),               # Cone radius
+            vetos  = cms.vstring('0.04',            # Inner veto cone radius
+                                 'Threshold(1.0)'), # Pt threshold
+            skipDefaultVeto = cms.bool(True),
+            # cut value
+            cut = cms.double(50.0),
+        ),
+        ecal = cms.PSet(
+            # source
+            src = cms.InputTag("patAODPhotonIsolations","gamIsoDepositEcalFromClusts"),
+            # parameters
+            deltaR          = cms.double(0.4),
+            vetos           = cms.vstring('EcalBarrel:0.045', 'EcalEndcaps:0.070'),
+            skipDefaultVeto = cms.bool(True),
+            # cut value
+            cut = cms.double(50.0),
+        ),
+        hcal = cms.PSet(
+            # source 
+            src = cms.InputTag("patAODPhotonIsolations","gamIsoDepositHcalFromTowers"),
+            # parameters
+            deltaR          = cms.double(0.4),
+            skipDefaultVeto = cms.bool(True),
+            # cut value
+            cut = cms.double(50.0)
+        ),
+        user = cms.VPSet(),
 )
+##############################################################
 
+
+##############################################################
+# Variables for our analyzer
 process.photonIDAna = cms.EDAnalyzer("PatPhotonSimpleAnalyzer",
     outputFile  = cms.string('PatPhotonHists.root'),
 
-    # Variables that must be passed before a photon candidate (a SuperCluster)
-    #  gets placed into the histograms.  Basic, simple cuts.
+    # Some extra cuts you might wish to make
+    #  before histograms/TTrees are filled.
     # Minimum Et
     minPhotonEt     = cms.double(10.0),
     # Minimum and max abs(eta)
@@ -53,11 +97,11 @@ process.photonIDAna = cms.EDAnalyzer("PatPhotonSimpleAnalyzer",
     maxPhotonHoverE = cms.double(0.2),
 
     # Optionally produce a TTree of photons (set to False or True).
-    # This slows down the analyzer, and if running
-    # over 100,000+ events, this can create a large ROOT file
-    createPhotonTTree  = cms.bool(False)
+    createPhotonTTree  = cms.bool(True)
 )
+##############################################################
 
+
+# Run PhotonID, PAT Layer0, PAT Layer1, Our Analyzer
 process.p = cms.Path(process.photonIDSequence*process.patLayer0*process.patLayer1*process.photonIDAna)
-#process.e = cms.EndPath(process.Out)
 
