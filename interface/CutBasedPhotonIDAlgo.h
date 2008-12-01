@@ -101,7 +101,8 @@ public:
   double photonEcalRecHitConeInnerRadius_;
   double photonEcalRecHitConeOuterRadius_;
   double photonEcalRecHitEtaSlice_;
-  double photonEcalRecHitThresh_;
+  double photonEcalRecHitThreshEt_;
+  double photonEcalRecHitThreshE_;
   double photonHcalRecHitConeInnerRadius_;
   double photonHcalRecHitConeOuterRadius_;
   double photonHcalRecHitEtaSlice_;

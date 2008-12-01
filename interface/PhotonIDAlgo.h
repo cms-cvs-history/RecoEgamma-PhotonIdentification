@@ -41,14 +41,21 @@ public:
 				double RCone,
 				double RConeInner,
                                 double etaSlice,
+				double eMin,
 				double etMin);
-  double calculateHcalRecHitIso(const reco::Photon* photon,
-				const edm::Event& iEvent,
-				const edm::EventSetup& iSetup,
-				double RCone,
-				double RConeInner,
-                                double etaSlice,
-				double etMin);
+  double calculateHcalTowerIso(const reco::Photon* photon,
+			       const edm::Event& iEvent,
+			       const edm::EventSetup& iSetup,
+			       double RCone,
+			       double RConeInner,
+			       double eMin);
+/*  double calculateHcalRecHitIso(const reco::Photon* photon, */
+/* 				const edm::Event& iEvent, */
+/* 				const edm::EventSetup& iSetup, */
+/* 				double RCone, */
+/* 				double RConeInner, */
+/*                                 double etaSlice, */
+/* 				double etMin); */
 
   double calculateR9(const reco::Photon* photon,
 		     const edm::Event& iEvent,
