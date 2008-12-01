@@ -16,6 +16,7 @@
 #include "RecoEgamma/EgammaIsolationAlgos/interface/EgammaEcalIsolation.h"
 #include "RecoEgamma/EgammaIsolationAlgos/interface/EgammaHcalIsolation.h"
 #include "RecoEgamma/EgammaIsolationAlgos/interface/EgammaRecHitIsolation.h"
+#include "RecoEgamma/EgammaIsolationAlgos/interface/EgammaTowerIsolation.h"
 #include "DataFormats/DetId/interface/DetId.h"
 #include "DataFormats/EcalDetId/interface/EEDetId.h"
 #include "DataFormats/EcalDetId/interface/EBDetId.h"
@@ -123,7 +124,9 @@ void PhotonIDAlgo::calculateTrackIso(const reco::Photon* photon,
   //Photon Eta and Phi.  Hope these are correct.
 
   
-  PhotonTkIsolation phoIso(RCone, RinnerCone, pTThresh, 2., trackCollection);
+  //  PhotonTkIsolation phoIso(RCone, RinnerCone, pTThresh, 2., trackCollection);
+  PhotonTkIsolation phoIso(RCone, RinnerCone, pTThresh, 2.,2000., trackCollection, math::XYZPoint(0,0,0));
+
   counter = phoIso.getNumberTracks(photon);
   ptSum = phoIso.getPtTracks(photon);
   //delete phoIso;
@@ -173,6 +176,7 @@ double PhotonIDAlgo::calculateEcalRecHitIso(const reco::Photon* photon,
 					    double RCone,
 					    double RConeInner,
                                             double etaSlice,
+					    double eMin,
 					    double etMin){
 
 
@@ -199,6 +203,7 @@ double PhotonIDAlgo::calculateEcalRecHitIso(const reco::Photon* photon,
 			       RConeInner,
                                etaSlice,
 			       etMin,
+			       eMin,
 			       geoHandle,
 			       &(*RecHits),
 			       DetId::Ecal);
@@ -252,39 +257,66 @@ double PhotonIDAlgo::calculateR9(const reco::Photon* photon,
 
 }
 
-double PhotonIDAlgo::calculateHcalRecHitIso(const reco::Photon* photon,
-					    const edm::Event& iEvent,
-					    const edm::EventSetup& iSetup,
-					    double RCone,
-					    double RConeInner,
-                                            double etaSlice,
-					    double etMin){
+// double PhotonIDAlgo::calculateHcalRecHitIso(const reco::Photon* photon,
+// 					    const edm::Event& iEvent,
+// 					    const edm::EventSetup& iSetup,
+// 					    double RCone,
+// 					    double RConeInner,
+//                                             double etaSlice,
+// 					    double etMin){
 
 
-  edm::Handle<HBHERecHitCollection> hcalhitsCollH;
+//   edm::Handle<HBHERecHitCollection> hcalhitsCollH;
  
-  iEvent.getByLabel(hcalProducer_,hcalCollection_, hcalhitsCollH);
+//   iEvent.getByLabel(hcalProducer_,hcalCollection_, hcalhitsCollH);
 
-  const HBHERecHitCollection* rechitsCollection_ = hcalhitsCollH.product();
+//   const HBHERecHitCollection* rechitsCollection_ = hcalhitsCollH.product();
 
-  std::auto_ptr<CaloRecHitMetaCollectionV> RecHits(0); 
-  RecHits = std::auto_ptr<CaloRecHitMetaCollectionV>(new HBHERecHitMetaCollection(*rechitsCollection_));
+//   std::auto_ptr<CaloRecHitMetaCollectionV> RecHits(0); 
+//   RecHits = std::auto_ptr<CaloRecHitMetaCollectionV>(new HBHERecHitMetaCollection(*rechitsCollection_));
 
-  edm::ESHandle<CaloGeometry> geoHandle;
-  iSetup.get<CaloGeometryRecord>().get(geoHandle);
-  double ecalIsol=0.;
+//   edm::ESHandle<CaloGeometry> geoHandle;
+//   iSetup.get<CaloGeometryRecord>().get(geoHandle);
+//   double ecalIsol=0.;
   
 
-  EgammaRecHitIsolation phoIso(RCone,
-			       RConeInner,
-			       etMin,
-                               etaSlice,
-			       geoHandle,
-			       &(*RecHits),
-			       DetId::Hcal);
-  ecalIsol = phoIso.getEtSum(photon);
-  //  delete phoIso;
+//   EgammaRecHitIsolation phoIso(RCone,
+// 			       RConeInner,
+// 			       etMin,
+//                                etaSlice,
+// 			       geoHandle,
+// 			       &(*RecHits),
+// 			       DetId::Hcal);
+//   ecalIsol = phoIso.getEtSum(photon);
+//   //  delete phoIso;
 
+//   return ecalIsol;
+  
+
+// }
+double PhotonIDAlgo::calculateHcalTowerIso(const reco::Photon* photon,
+					   const edm::Event& iEvent,
+					   const edm::EventSetup& iSetup,
+					   double RCone,
+					   double RConeInner,
+					   double eMin){
+
+  edm::Handle<CaloTowerCollection> hcalhitsCollH;
+ 
+  iEvent.getByLabel(hcalProducer_,hcalCollection_, hcalhitsCollH);
+  
+  const CaloTowerCollection *toww = hcalhitsCollH.product();
+
+  double ecalIsol=0.;
+  
+  //std::cout << "before iso call" << std::endl;
+  EgammaTowerIsolation phoIso(RCone,
+			      RConeInner,
+			      eMin,-1,
+			      toww);
+  ecalIsol = phoIso.getTowerEtSum(photon);
+  //  delete phoIso;
+  //std::cout << "after call" << std::endl;
   return ecalIsol;
   
 

@@ -15,7 +15,9 @@ void CutBasedPhotonIDAlgo::setup(const edm::ParameterSet& conf) {
   photonEcalRecHitConeInnerRadius_ = conf.getParameter<double>("EcalRecHitInnerRadius");
   photonEcalRecHitConeOuterRadius_ = conf.getParameter<double>("EcalRecHitOuterRadius");
   photonEcalRecHitEtaSlice_ = conf.getParameter<double>("EcalRecHitEtaSlice");
-  photonEcalRecHitThresh_ = conf.getParameter<double>("EcalRecThresh");
+  photonEcalRecHitThreshEt_ = conf.getParameter<double>("EcalRecThreshEt");
+  photonEcalRecHitThreshE_ = conf.getParameter<double>("EcalRecThreshE");
+
   photonHcalRecHitConeInnerRadius_ = conf.getParameter<double>("HcalRecHitInnerRadius");
   photonHcalRecHitConeOuterRadius_ = conf.getParameter<double>("HcalRecHitOuterRadius");
   photonHcalRecHitEtaSlice_ = conf.getParameter<double>("HcalRecHitEtaSlice");
@@ -148,19 +150,18 @@ reco::PhotonID CutBasedPhotonIDAlgo::calculate(const reco::Photon* pho, const ed
 						photonEcalRecHitConeOuterRadius_,
 						photonEcalRecHitConeInnerRadius_,
                                                 photonEcalRecHitEtaSlice_,
-						photonEcalRecHitThresh_);
+						photonEcalRecHitThreshE_,
+						photonEcalRecHitThreshEt_);
   //double rawSCEt = (pho->superCluster()->rawEnergy())/(cosh(pho->p4().Eta()));
   //double tempiso = EcalRecHitIso - rawSCEt;
   //EcalRecHitIso= tempiso;
 
 //   std::cout << "Output from ecal isolation: ";
 //   std::cout << " Sum pT: " << EcalRecHitIso << std::endl;
+  double HcalRecHitIso = calculateHcalTowerIso(pho, e, es, photonHcalRecHitConeOuterRadius_,
+					       photonHcalRecHitConeInnerRadius_,
+					       photonHcalRecHitThresh_);
 
-  double HcalRecHitIso = calculateHcalRecHitIso(pho, e, es,
-						photonHcalRecHitConeOuterRadius_,
-						photonHcalRecHitConeInnerRadius_,
-                                                photonHcalRecHitEtaSlice_,    
-						photonHcalRecHitThresh_);
 
 //   std::cout << "Output from hcal isolation: ";
 //   std::cout << " Sum pT: " << HcalRecHitIso << std::endl;
