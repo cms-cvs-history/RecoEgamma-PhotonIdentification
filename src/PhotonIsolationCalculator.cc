@@ -265,8 +265,8 @@ void PhotonIsolationCalculator::calculate(const reco::Photon* pho,
     trackConeOuterRadiusB_    = trkIsoEndcapRadiusB_[0];
     trackConeInnerRadiusB_    = trkIsoEndcapRadiusB_[1];
     isolationtrackThresholdB_ = trkIsoEndcapRadiusB_[2];
-    trackLipRadiusA_          = trkIsoEndcapRadiusA_[3];
-    trackD0RadiusA_           = trkIsoEndcapRadiusA_[4];
+    trackLipRadiusB_          = trkIsoEndcapRadiusB_[3];
+    trackD0RadiusB_           = trkIsoEndcapRadiusB_[4];
 
 
     photonEcalRecHitConeInnerRadiusB_  = ecalIsoEndcapRadiusB_[0];
@@ -292,13 +292,13 @@ void PhotonIsolationCalculator::calculate(const reco::Photon* pho,
   int ntrkA=0;
   double trkisoA=0;
   calculateTrackIso(pho, e, trkisoA, ntrkA, isolationtrackThresholdA_,    
-		    trackConeOuterRadiusA_, trackConeInnerRadiusA_);
+		    trackConeOuterRadiusA_, trackConeInnerRadiusA_,trackLipRadiusA_,trackD0RadiusA_);
 
   //Calculate solid cone track isolation, CONE A
   int sntrkA=0;
   double strkisoA=0;
   calculateTrackIso(pho, e, strkisoA, sntrkA, isolationtrackThresholdA_,    
-		    trackConeOuterRadiusA_, 0.);
+		    trackConeOuterRadiusA_, 0., trackLipRadiusA_,trackD0RadiusA_);
 
   phoisolR1.nTrkHollowCone = ntrkA;
   phoisolR1.trkSumPtHollowCone = trkisoA;
@@ -309,13 +309,13 @@ void PhotonIsolationCalculator::calculate(const reco::Photon* pho,
   int ntrkB=0;
   double trkisoB=0;
   calculateTrackIso(pho, e, trkisoB, ntrkB, isolationtrackThresholdB_,    
-		    trackConeOuterRadiusB_, trackConeInnerRadiusB_);
+		    trackConeOuterRadiusB_, trackConeInnerRadiusB_, trackLipRadiusB_,trackD0RadiusB_);
 
   //Calculate solid cone track isolation, CONE B
   int sntrkB=0;
   double strkisoB=0;
   calculateTrackIso(pho, e, strkisoB, sntrkB, isolationtrackThresholdB_,    
-		    trackConeOuterRadiusB_, 0.);
+		    trackConeOuterRadiusB_, 0., trackLipRadiusB_, trackD0RadiusB_);
 
   phoisolR2.nTrkHollowCone = ntrkB;
   phoisolR2.trkSumPtHollowCone = trkisoB;
@@ -414,6 +414,7 @@ void PhotonIsolationCalculator::classify(const reco::Photon* photon,
 
   //Are you in the gap between EE and Ecal Barrel (EB)?
   if (fabs(feta-1.479)<.1) isEBEEGap=true; 
+  // if ( feta >= 1.4442 && feta <= 1.566 ) isEBEEGap=true; 
 
   // Set isEBGap if photon is 
   //  in the barrel (|eta| < 1.5), and 
